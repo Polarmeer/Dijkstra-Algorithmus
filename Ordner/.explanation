@@ -1,1 +1,112 @@
+Explanation:
 
+In the beginning we initiate a table list which will be our matrix (line 134).
+This will start the function def osa(). width and height will be defined as w and h respectivly in a
+5 x 5. Its represent an Matrix with 5 nodes and 25 possible routes. Example:
+[[0,0,0,0],         Matrix[which list][which position in the list]
+  [0,0,0,0],
+  [0,0,0,0],
+  [0,0,0,0],
+  [0,0,0,0],
+]
+Note: if you want to change the Matrix you can change def osa() to def osa(Matrix=0).
+and use your own one (take line 3 and change w, h to your own matrix list and do like line 5 to 12 )
+
+w,h=0,0
+for i in range(len(Matrix)):
+    print(i)
+    w+=1
+    h+=1
+print(w,h)
+
+(all routes need to be possible to reach). line 14 says, that all routes are the same size from and to
+each connected node. Then we change in line 17 all 0 values to an imaginary high number, which func as
+a barrier and as a no route.
+(line 22) There will another list which will be used as table to save the distance from point 0 to each
+node and the node visited before. Ordered by nodes. 
+Note( change at line 22 the 'range(5)' to your range height(here: h))
+laufliste:
+            Distance    visited before
+          ----------------------------
+  Node 0      .               .
+  Node 1      .               .
+  Node 2      .               .
+  Node 3      .               .
+  Node 4      .               .
+  
+  return Matrix and laufliste
+  
+  Both variables will be used in def grapha (line 95)
+  we define 4 variables beside both from before:
+    besucht = []
+    unbesucht = [0, 1, 2, 3, 4]     (change to your width or return an extra variable from before Example: 'return Matrix, laufliste,h' 
+                                                and change unbesucht to 'unbesucht=list(range(h))' and def grapha(Matrix, laufliste,h):)
+    value = 0                        
+    pointer = 0
+  
+  -besucht means in german 'visited' and unbesucht 'unvisited' for a lookup if we traversed through this route already or not.
+  -pointer and value are showing us which node is our current position and value the already walked route distance
+  
+  line 101:
+ 
+  while 'unbesucht' is not empty, an iteration will be started and will lookup if (in the first
+    iteration) Matrix[0][0] is 99 and pointer 0. Both conditions are true and will be considered 
+    as our starting point. laufliste will be refreshed: (line 104- 106 only ones)
+   Distance    visited before
+          ----------------------------
+  Node 0      0               'Start'
+  Node 1      .               .
+  Node 2      .               .
+  Node 3      .               .
+  Node 4      .               .
+  
+  then Matrix[pointer=0][i(1-4)] continue with the loop and will search for all node in near vicinity
+   ,where routes are not available and haven't been visited before in laufliste.
+   we update the laufliste with the route distance and if present the route distance from before 
+   (in the first iteration value= zero and Matrix[0][i(1-4)] assigned value.) (line 116-118)
+      Distance    visited before
+          ----------------------------
+  Node 0      0               'Start'
+  Node 1      6               0
+  Node 2      .               .
+  Node 3      1               0
+  Node 4      .               .
+  
+  Means node 1 and 3 are connected to 0. the distance are for now 0->1 (Distance:6)
+  0->3 (Distance:1)
+  if all routes are exhausted remove pointer (value=0) from unbesucht and add it to besucht
+  
+ now we look up the next route in laufliste (line 122) in def nextpoint:
+ begin: line 65 
+ we create an list named temp for all routes that are known (from 0->1 and 0->3) and have not been
+ visited ('besucht').
+ Then we compare all distances in this list for the shortest.
+ temp:                                  (just laufliste without nodes in besucht and '.' values)
+   a    Distance    visited before
+----------------------------------------
+  1      6               0
+  3      1               0
+
+We update pointer to a (Node) and value (distance) (here Node 3 with a distance of 1)
+
+next loop in grapha (line 95):
+Our pointer have been refreshed to 3 and value to 1. That means we go from node 0 to 3.
+we have with the new pointer two routes line 107 and line 116.
+line 107 if we find a not shown route or an route which have been in laufliste and is nearer over point 3 than another way.
+end loop pointer 3 and value 1
+Updated:
+      Distance    visited before
+          ----------------------------
+  Node 0      0               'Start'
+  Node 1      3               3
+  Node 2      .               .
+  Node 3      1               0
+  Node 4      2               3
+
+than again...
+
+extra:
+def wege(Matrix)---->shows all possible routes
+def laufweg(laufliste)----->used routes from each nodes to node 0 can be extended to show each distance
+
+have fun
